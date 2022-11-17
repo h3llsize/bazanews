@@ -1,16 +1,20 @@
 <template>
-  <div>
-
+  <div class="website">
+    <HeaderSection/>
+    <Router-View/>
   </div>
 </template>
 
 <script>
+  import HeaderSection from '@/components/HeaderSection';
+
   export default {
     data: function() {
       return {
 
       }
     },
+    components: { HeaderSection },
   }
 </script>
 
@@ -31,10 +35,26 @@
   input, button {
     background: none;
     border: none;
+    outline: none;
   }
 
   button {
     cursor: pointer;
+  }
+
+  body {
+    position: relative;
+    min-height: 100vh;
+    background: #F5F5F5;
+  }
+
+  .container {
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .website {
+    position: relative;
   }
   // global settings
 </style>
