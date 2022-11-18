@@ -1,6 +1,9 @@
 <template>
-  <form class="search" @submit.prevent="sendSearchValue" key="search">
-    <input v-model="currentSearchValue" type="text" name="search" placeholder="попробуйте найти что-то" class="search__input"/>
+  <form class="search" @submit.prevent="sendSearchValue" key="search" autocomplete="off">
+    <input v-model="currentSearchValue" type="text" name="search" :placeholder="placeholder" class="search__input"/>
+    <svg class="search__icon">
+      <use xlink:href="../assets/sprite.svg#search-outline"></use>
+    </svg>
     <button v-if="currentSearchValue" type="submit" class="search__send">
       Найти
     </button>
@@ -9,14 +12,29 @@
 
 <style scoped lang="scss">
   .search {
-    position: relative;
+    position: fixed;
+    z-index: 100;
+    top: 30px;
+
+    width: 600px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -30px;
+      top: -30px;
+      right: -30px;
+      bottom: -30px;
+
+      background: #F5F5F5;
+    }
   }
 
   .search__input {
     position: relative;
 
     width: 100%;
-    padding: 10px 15px;
+    padding: 10px 15px 10px 65px;
 
     background: #fff;
     border-radius: 15px;
@@ -25,15 +43,18 @@
     line-height: 25px;
 
     color: rgba(black, .5);
+  }
 
-    &::placeholder {
-      display: flex;
-      align-items: center;
-      padding-left: 40px;
-      background: url(../assets/search-outline.svg) no-repeat;
-      opacity: .5;
-      color: black;
-    }
+  .search__icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 30px;
+    height: 30px;
+
+    color: rgba(black, .5);
   }
 
   .search__send {
@@ -51,7 +72,7 @@
 
 <script>
   export default {
-    props: [ 'value' ],
+    props: [ 'value', 'placeholder' ],
     data: function() {
       return {
         currentSearchValue: '',
