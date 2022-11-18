@@ -112,6 +112,8 @@
 </style>
 
 <script>
+  import pathItems from '@/helpers/pathItems';
+
   export default {
     data: function() {
       return {
@@ -123,27 +125,24 @@
         navItems: [
           {
             title: 'Главная',
-            path: 'newspaper-outline',
+            path: 'newspaper-outline.svg',
             route: 'news',
           },
           {
             title: 'События',
-            path: 'calendar-outline',
+            path: 'calendar-outline.svg',
             route: 'actions',
           },
           {
             title: 'Предприятия',
-            path: 'storefront-outline',
+            path: 'storefront-outline.svg',
             route: 'enterprises',
           },
         ]
       }
     },
     methods: {
-      pathItems: function(path) {
-        const images = require.context('@/assets/');
-        return images(`./${path}.svg`)
-      }
+      pathItems,
     },
     // watch: {
     //   '$route.name': {

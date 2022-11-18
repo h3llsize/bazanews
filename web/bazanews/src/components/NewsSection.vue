@@ -4,54 +4,44 @@
       <SectionSearch :value.sync="searchValue" placeholder="попробуйте что-то найти"/>
 
       <ul class="news__list">
-        <li class="news__swiper-item item--swiper">
-          <div ref="swiper" class="news__swiper swiper">
-            <div class="news__wrapper-swiper swiper-wrapper">
-              <div class="news__slide-swiper swiper-slide">
-                <img src="../assets/slide1.png" alt="slide" class="news__image-swiper">
-              </div>
-              <div class="news__slide-swiper swiper-slide">
-                <img src="../assets/slide2.png" alt="slide" class="news__image-swiper">
+        <li class="news__item" :class="newsClassObj(item)" v-for="item in newsData" :key="newsData.indexOf(item)">
+          <template v-if="item.type != 'swiper'">
+            <div v-if="item.type == 'user'" class="news__user-item">
+              <img src="../assets/person-circle-outline.svg" alt="Пользователь" class="news__icon-item">
+              <div class="news__data-item">
+                <h3 class="news__name-item">
+                  {{ item.name }}
+                </h3>
+                <span class="news__subscribes-item">
+                  {{ subscribeFormat(item.subscribes) }} подписчиков
+                </span>
               </div>
             </div>
-          </div>
-          <div class="news__button-prev-swiper swiper-button-prev">
-            <img src="../assets/chevron-back-outline.svg" alt="arrow" class="news__arrow-swiper">
-          </div>
-          <div class="news__button-next-swiper swiper-button-next">
-            <img src="../assets/chevron-back-outline.svg" alt="arrow" class="news__arrow-swiper">
-          </div>
-        </li>
-
-        <li class="news__item item--admin">
-          <img src="../assets/gaz.jpg" alt="газопровод" class="news__image-item">
-          <h2 class="news__title-item">
-            Завершение проектирования газопровода "Союз Восток" ожидают в 2023 году
-          </h2>
-          <p class="news__desc-item">
-            Завершение проектирования газопровода "Союз Восток", продолжающего "Силу Сибири 2" через Монголию в Китай, ожидается в 2023 году, сообщила вице-премьер РФ Виктория Абрамченко.
-          </p>
-        </li>
-
-        <li class="news__item item--user">
-          <div class="news__user-item">
-            <img src="../assets/person-circle-outline.svg" alt="Пользователь" class="news__icon-item">
-            <div class="news__data-item">
-              <h3 class="news__name-item">
-                riwall
-              </h3>
-              <span class="news__subscribes-item">
-                36К подписчиков
-              </span>
+            <img :src=pathItems(item.image) alt="image" class="news__image-item">
+            <h2 class="news__title-item">
+              {{ item.title }}
+            </h2>
+            <p class="news__desc-item">
+              {{ item.desc }}
+            </p>
+          </template>
+          <template v-else>
+            <div ref="swiper" class="news__swiper swiper">
+              <div class="news__wrapper-swiper swiper-wrapper">
+                <div class="news__slide-swiper swiper-slide" v-for="image in item.images">
+                  <router-link :to="{ name: image.route }">
+                    <img :src=pathItems(image.path) alt="slide" class="news__image-swiper">
+                  </router-link>
+                </div>
+              </div>
             </div>
-          </div>
-          <img src="../assets/image.png" alt="image" class="news__image-item">
-          <h2 class="news__title-item">
-            Coolest wallpaper!
-          </h2>
-          <p class="news__desc-item">
-            I made a very beautiful wallpaper for your desktop.
-          </p>
+            <div class="news__button-prev-swiper swiper-button-prev">
+              <img src="../assets/chevron-back-outline.svg" alt="arrow" class="news__arrow-swiper">
+            </div>
+            <div class="news__button-next-swiper swiper-button-next">
+              <img src="../assets/chevron-back-outline.svg" alt="arrow" class="news__arrow-swiper">
+            </div>
+          </template>
         </li>
 
 
@@ -145,7 +135,13 @@
     width: calc(100% + 15px * 2);
   }
 
-  .news__swiper-item {
+  .news__item.item--swiper {
+    padding: 0;
+    background: none;
+    border-radius: 0;
+  }
+
+  .item--swiper{
     position: relative;
   }
 
@@ -197,6 +193,7 @@
 
 <script>
   import SectionSearch from '@/components/SectionSearch';
+  import pathItems from '@/helpers/pathItems';
   import Swiper from 'swiper/bundle';
   import 'swiper/css/bundle';
 
@@ -204,8 +201,54 @@
     components: { SectionSearch },
     data: function() {
       return {
-        searchValue: ''
+        searchValue: '',
+
+        newsData: [
+          {
+            type: 'swiper',
+            images: [
+              {
+                path: 'slide1.png',
+                route: 'news',
+              },
+              {
+                path: 'slide2.png',
+                route: 'news',
+              }
+            ]
+          },
+          {
+            type: 'admin',
+            image: 'gaz.jpg',
+            title: 'Завершение проектирования газопровода "Союз Восток" ожидают в 2023 году',
+            desc: 'Завершение проектирования газопровода "Союз Восток", продолжающего "Силу Сибири 2" через Монголию в Китай, ожидается в 2023 году, сообщила вице-премьер РФ Виктория Абрамченко.',
+            route: 'news',
+          },
+          {
+            type: 'user',
+            avatar: 'person-circle-outline.svg',
+            name: 'riwall',
+            subscribes: '36630',
+            image: 'image.png',
+            title: 'Coolest wallpaper!',
+            desc: 'I made a very beautiful wallpaper for your desktop.',
+            route: 'news'
+          },
+        ],
       }
+    },
+    methods: {
+      pathItems,
+      subscribeFormat: function(value) {
+        return value >= 1000 ? Math.round(value / 100) / 10 + 'K' : value
+      },
+      newsClassObj: function(item) {
+        return {
+          'item--admin': item.type == 'admin',
+          'item--user': item.type == 'user',
+          'item--swiper': item.type == 'swiper',
+        }
+      },
     },
     mounted: function() {
       new Swiper(this.$refs.swiper, {
