@@ -2,11 +2,13 @@
   <div class="website">
     <HeaderSection/>
     <Router-View/>
+    <ProfileSection/>
   </div>
 </template>
 
 <script>
   import HeaderSection from '@/components/HeaderSection';
+  import ProfileSection from '@/components/ProfileSection';
 
   export default {
     data: function() {
@@ -14,7 +16,7 @@
 
       }
     },
-    components: { HeaderSection },
+    components: { HeaderSection, ProfileSection },
   }
 </script>
 

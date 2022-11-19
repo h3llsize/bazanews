@@ -5,10 +5,12 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    authorized: true
   },
   getters: {
   },
   mutations: {
+    
   },
   actions: {
   },
