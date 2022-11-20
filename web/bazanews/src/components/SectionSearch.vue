@@ -13,17 +13,18 @@
 <style scoped lang="scss">
   .search {
     position: fixed;
-    z-index: 100;
     top: 30px;
+
+    z-index: 100;
 
     width: 600px;
 
     &::before {
       content: '';
       position: absolute;
-      left: -30px;
+      left: -150px;
       top: -30px;
-      right: -30px;
+      right: -150px;
       bottom: -30px;
 
       background: #F5F5F5;
