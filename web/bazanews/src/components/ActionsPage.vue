@@ -3,55 +3,33 @@
     <div class="container actions__container">
       <SectionSearch :value.sync="searchValue" placeholder="найти событие"/>
 
-      <!-- <yandex-map
-        :coords="[54.756738, 35.603973]"
-        zoom="15"
-        style="width: 600px; height: 600px;"
-        :cluster-options="{
-          1: {clusterDisableClickZoom: true}
-        }"
-        :controls="[ 'zoomControl' ]"
-      >
-
-        <ymap-marker
-          marker-id="1"
-          marker-type="placemark"
-          :coords="[54.757538, 35.604173]"
-          hint-content="Парк Никола-Ленивец"
-          :icon="{color: 'green', glyph: 'park'}"
-          cluster-name="1"
-        />
-
-      </yandex-map> -->
-
       <ul class="actions__list">
-        <li class="actions__item is_active">
+        <li class="actions__item" :class="{ is_active: item.active }" v-for="item in actionsItems" :key="actionsItems.indexOf(item)">
           <div class="actions__mini-item">
-            <img src="../assets/actions1.png" alt="image" class="actions__image-item">
+            <img :src="pathItems(item.image)" alt="image" class="actions__image-item">
             <div class="actions__info-item">
               <h2 class="actions__title-item">
-                Масленница
+                {{ item.title }}
               </h2>
               <p class="actions__desc-item">
-                это торжественная встреча весны и одновременно освобождение от всего плохого, надоевшего, раздражающего. В 2023 году празднования пройдут с 20 по 26 февраля, в том числе в арт-парке Никола-Ленивец. Программа будет озвучена ближе к дате.
+                {{ item.desc }}
               </p>
               <span class="actions__data-item">
-                26 февраля 2023 года • Парк Никола-Ленивец
+                {{ item.date }} • {{ item.place }}
               </span>
             </div>
           </div>
 
           <div class="actions__full-item">
             <h3 class="actions__programm-item">
-              Программа
+              {{ item.programmTitle }}
             </h3>
             <p class="actions__desc-programm-item">
-              Напомним, в этой небольшой деревне в Калужской области находится арт-парк с необычными арт-объектами, которые остаются после ежегодного фестиваля “Архивостояние”. Право радовать гостей долгие годы получают исключительно выдающиеся объекты. Конечно же, не менее выдающийся арт-объект появится и на Масленицу. В финале праздника его сожгут вместо чучела. В этом году таким объектом станет огромная «Вавилонская башня».
-              До сожжения башни весь день гости будут гулять по снежным тропам и угощаться блинами. Не обойдется и без традиционных забав: можно будет прыгнуть в сеновал с крепости Бастилии и победить Жар-птицу. Главной фишкой праздника станет небесная почта. По территории парка прокатят шар, в который можно положить записку с желаниями. Потом наполненный шар доставят к «Вавилонской башне» и сожгут. Так послания отправятся прямиком в небо.
+              {{ item.programmDesc }}
             </p>
             <div class="actions__map-info-item">
               <yandex-map
-                :coords="[54.756738, 35.603973]"
+                :coords="item.map.coords"
                 zoom="15"
                 style="width: 425px; height: 280px;"
                 :cluster-options="{
@@ -63,9 +41,9 @@
                 <ymap-marker
                   marker-id="1"
                   marker-type="placemark"
-                  :coords="[54.757538, 35.604173]"
-                  hint-content="Парк Никола-Ленивец"
-                  :icon="{color: 'green', glyph: 'park'}"
+                  :coords="item.map.coords"
+                  :hint-content="item.place"
+                  :icon="{color: item.map.icon.color, glyph: item.map.icon.type}"
                   cluster-name="1"
                 />
 
@@ -74,37 +52,28 @@
               <div class="actions-time-price-item">
                 <div class="actions__time-item">
                   <h3 class="actions__title-time-item">
-                    Расписание
+                    {{ item.timeTitle }}
                   </h3>
                   <ul class="actions__list-time">
-                    <li class="actions__item-time">
-                      12:00 - 16:00 ― Никола-Ленивецкий городок забав и поединков
-                    </li>
-                    <li class="actions__item-time">
-                      13:00 — 16:00 ― «Небесная почта» Олега Жуковского и театра La Pushkin
-                    </li>
-                    <li class="actions__item-time">
-                      16:45 ― начало перформанса, предваряющего сожжение
-                    </li>
-                    <li class="actions__item-time">
-                      17:45 — 19:00 ― сожжение «Вавилонской башни»
+                    <li class="actions__item-time" v-for="timeItem in item.timeItems">
+                      {{ timeItem }}
                     </li>
                   </ul>
                 </div>
                 <div class="actions__price-item">
                   <h3 class="actions__title-price-item">
-                    Билеты и цены
+                    {{ item.priceTitle }}
                   </h3>
                   <p class="actions__desc-price-item">
-                    Цена билетов на Масленицу в Никола-Ленивце 6 марта 2022: 2 900 рублей. Дети до 14 лет – бесплатно.
+                    {{ item.priceDesc }}
                   </p>
                 </div>
               </div>
             </div>
           </div>
 
-          <button class="actions__more-item">
-            Показать
+          <button class="actions__more-item" @click.prevent="item.active = !item.active">
+            {{ item.active ? 'Закрыть' : 'Показать' }}
             <svg class="actions__icon-item">
               <use xlink:href="../assets/sprite.svg#chevron-back-outline"></use>
             </svg>
@@ -146,8 +115,6 @@
     padding: 15px;
     background: #fff;
     border-radius: 15px;
-
-    cursor: pointer;
 
     height: 230px;
 
@@ -293,7 +260,8 @@
 
 <script>
   import SectionSearch from '@/components/SectionSearch';
-  import { yandexMap, ymapMarker } from 'vue-yandex-maps'
+  import { yandexMap, ymapMarker } from 'vue-yandex-maps';
+  import pathItems from '@/helpers/pathItems';
 
   export default {
     components: { SectionSearch, yandexMap, ymapMarker },
@@ -301,7 +269,64 @@
       return {
         searchValue: '',
 
+        actionsItems: [
+          {
+            image: 'actions1.png',
+            title: 'Масленница',
+            desc: 'это торжественная встреча весны и одновременно освобождение от всего плохого, надоевшего, раздражающего. В 2023 году празднования пройдут с 20 по 26 февраля, в том числе в арт-парке Никола-Ленивец. Программа будет озвучена ближе к дате.',
+            date: '26 февраля 2023 года',
+            place: 'Парк Никола-Ленивец',
+            programmTitle: 'Программа',
+            programmDesc: 'Напомним, в этой небольшой деревне в Калужской области находится арт-парк с необычными арт-объектами, которые остаются после ежегодного фестиваля “Архивостояние”. Право радовать гостей долгие годы получают исключительно выдающиеся объекты. Конечно же, не менее выдающийся арт-объект появится и на Масленицу. В финале праздника его сожгут вместо чучела. В этом году таким объектом станет огромная «Вавилонская башня». До сожжения башни весь день гости будут гулять по снежным тропам и угощаться блинами. Не обойдется и без традиционных забав: можно будет прыгнуть в сеновал с крепости Бастилии и победить Жар-птицу. Главной фишкой праздника станет небесная почта. По территории парка прокатят шар, в который можно положить записку с желаниями. Потом наполненный шар доставят к «Вавилонской башне» и сожгут. Так послания отправятся прямиком в небо.',
+            map: {
+              coords: [54.756738, 35.603973],
+              icon: {
+                color: 'green',
+                type: 'park',
+              },
+            },
+            timeTitle: 'Расписание',
+            timeItems: [
+              '12:00 - 16:00 ― Никола-Ленивецкий городок забав и поединков',
+              '13:00 — 16:00 ― «Небесная почта» Олега Жуковского и театра La Pushkin',
+              '16:45 ― начало перформанса, предваряющего сожжение',
+              '17:45 — 19:00 ― сожжение «Вавилонской башни»',
+            ],
+            priceTitle: 'Билеты и цены',
+            priceDesc: 'Цена билетов на Масленицу в Никола-Ленивце 6 марта 2022: 2 900 рублей. Дети до 14 лет – бесплатно.',
+            active: false,
+          },
+          {
+            image: 'actions2.png',
+            title: 'Новый год в Москвариуме',
+            desc: 'С 17 декабря 2022-го по 15 января 2023 года Москвариум приглашает всех желающих в роскошное и незабываемое путешествие — «Новогодний круиз». На одной водной сцене встретятся акробаты, гимнасты, синхронистки и, конечно же, морские животные. Зрители смогут увидеть увидеть озорных дельфинов, моржа, морских львов и милых касаток.',
+            date: '17 декабря 2022 года',
+            place: 'Москвариум',
+            programmTitle: 'Программа',
+            programmDesc: 'Напомним, в этой небольшой деревне в Калужской области находится арт-парк с необычными арт-объектами, которые остаются после ежегодного фестиваля “Архивостояние”. Право радовать гостей долгие годы получают исключительно выдающиеся объекты. Конечно же, не менее выдающийся арт-объект появится и на Масленицу. В финале праздника его сожгут вместо чучела. В этом году таким объектом станет огромная «Вавилонская башня». До сожжения башни весь день гости будут гулять по снежным тропам и угощаться блинами. Не обойдется и без традиционных забав: можно будет прыгнуть в сеновал с крепости Бастилии и победить Жар-птицу. Главной фишкой праздника станет небесная почта. По территории парка прокатят шар, в который можно положить записку с желаниями. Потом наполненный шар доставят к «Вавилонской башне» и сожгут. Так послания отправятся прямиком в небо.',
+            map: {
+              coords: [54.756738, 35.603973],
+              icon: {
+                color: 'green',
+                type: 'park',
+              },
+            },
+            timeTitle: 'Расписание',
+            timeItems: [
+              '12:00 - 16:00 ― Никола-Ленивецкий городок забав и поединков',
+              '13:00 — 16:00 ― «Небесная почта» Олега Жуковского и театра La Pushkin',
+              '16:45 ― начало перформанса, предваряющего сожжение',
+              '17:45 — 19:00 ― сожжение «Вавилонской башни»',
+            ],
+            priceTitle: 'Билеты и цены',
+            priceDesc: 'Цена билетов на Масленицу в Никола-Ленивце 6 марта 2022: 2 900 рублей. Дети до 14 лет – бесплатно.',
+            active: false,
+          },
+        ],
       }
+    },
+    methods: {
+      pathItems,
     },
   }
 </script>
