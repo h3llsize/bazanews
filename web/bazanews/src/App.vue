@@ -1,7 +1,8 @@
 <template>
-  <div class="website">
-    <HeaderSection/>
+  <div class="website" :class="{ chat_active: chatActive }">
+    <HeaderSection :active.sync="chatActive"/>
     <Router-View/>
+    <ChatSection :active="chatActive"/>
     <ProfileSection/>
   </div>
 </template>
@@ -9,14 +10,18 @@
 <script>
   import HeaderSection from '@/components/HeaderSection';
   import ProfileSection from '@/components/ProfileSection';
+  import ChatSection from '@/components/ChatSection';
 
   export default {
+    components: { HeaderSection, ProfileSection, ChatSection },
     data: function() {
       return {
-
+        chatActive: true,
       }
     },
-    components: { HeaderSection, ProfileSection },
+    methods: {
+
+    }
   }
 </script>
 
@@ -57,6 +62,19 @@
 
   .website {
     position: relative;
+  }
+
+  .news,
+  .actions,
+  .enterprises {
+    transition: padding .25s ease;
+  }
+
+  .chat_active .news,
+  .chat_active .actions,
+  .chat_active .enterprises {
+    padding-right: 300px !important;
+
   }
   // global settings
 </style>

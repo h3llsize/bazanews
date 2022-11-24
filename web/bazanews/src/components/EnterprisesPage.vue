@@ -133,6 +133,7 @@
 
     width: 200px;
     height: 200px;
+    border-radius: 15px;
 
     object-fit: cover;
   }

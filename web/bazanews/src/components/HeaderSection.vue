@@ -15,8 +15,8 @@
               {{ item.title }}
             </router-link>
           </li>
-          <li class="header__item">
-            <button class="header__link">
+          <li class="header__item" :class="{ is_active: chatActive }">
+            <button class="header__link" @click.prevent="activateChat">
               <svg class="header__icon">
                 <use xlink:href="../assets/sprite.svg#chatbubble-outline"></use>
               </svg>
@@ -115,6 +115,7 @@
   import pathItems from '@/helpers/pathItems';
 
   export default {
+    props: [ 'active' ],
     data: function() {
       return {
         btns: {
@@ -138,22 +139,16 @@
             path: 'storefront-outline.svg',
             route: 'enterprises',
           },
-        ]
+        ],
+        chatActive: this.active,
       }
     },
     methods: {
       pathItems,
+      activateChat: function() {
+        this.chatActive = !this.chatActive;
+        this.$emit('update:active', this.chatActive);
+      }
     },
-    // watch: {
-    //   '$route.name': {
-    //     handler: function() {
-    //       this.navItems.forEach(el => {
-    //         el.active = el.route === this.$route.name ? true : false
-    //       })
-    //     },
-    //     deep: true,
-    //     immediate: true
-    //   }
-    // },
   }
 </script>

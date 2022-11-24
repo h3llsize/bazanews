@@ -7,7 +7,7 @@
         <li class="news__item" :class="newsClassObj(item)" v-for="item in newsData" :key="newsData.indexOf(item)">
           <template v-if="item.type != 'swiper'">
             <div v-if="item.type == 'user'" class="news__user-item">
-              <img src="../assets/person-circle-outline.svg" alt="Пользователь" class="news__icon-item">
+              <!-- <img src="../assets/person-circle-outline.svg" alt="Пользователь" class="news__icon-item"> -->
               <div class="news__data-item">
                 <h3 class="news__name-item">
                   {{ item.name }}
