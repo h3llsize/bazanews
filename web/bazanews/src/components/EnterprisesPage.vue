@@ -265,6 +265,7 @@
   import SectionSearch from '@/components/SectionSearch';
   import { yandexMap, ymapMarker } from 'vue-yandex-maps';
   import pathItems from '@/helpers/pathItems';
+  import { mapActions } from 'vuex';
 
   export default {
     components: { SectionSearch, yandexMap, ymapMarker },
@@ -303,6 +304,16 @@
     },
     methods: {
       pathItems,
+      ...mapActions({ loadEnterprises: 'loadEnterprises' }),
     },
+    created: function() {
+      // this.loadEnterprises();
+    },
+    watch: {
+      searchValue: function() {
+        store.commit('updateSearchValue', this.searchValue);
+        this.loadEnterprises();
+      }
+    }
   }
 </script>

@@ -11,17 +11,24 @@
   import HeaderSection from '@/components/HeaderSection';
   import ProfileSection from '@/components/ProfileSection';
   import ChatSection from '@/components/ChatSection';
+  import { mapActions } from 'vuex';
 
   export default {
     components: { HeaderSection, ProfileSection, ChatSection },
     data: function() {
       return {
-        chatActive: true,
+        chatActive: false,
       }
     },
     methods: {
-
+      ...mapActions({ validateToken: 'validateToken' }),
+    },
+    created: function() {
+      if (localStorage.getItem('bzaccesstoken') != "false") {
+        this.validateToken();
+      }
     }
+
   }
 </script>
 
@@ -74,7 +81,46 @@
   .chat_active .actions,
   .chat_active .enterprises {
     padding-right: 300px !important;
+  }
 
+  .pagination {
+    display: flex;
+    justify-content: center;
+
+    width: 100%;
+    padding-top: 20px;
+  }
+
+  .paginate {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    li {
+      transition: transform .25s ease;
+      &.active {
+        // filter: drop-shadow(0 10px 10px rgba(black, 0.25));
+        transform: scale(1.1);
+      }
+      &.disabled {
+        a {
+          cursor: not-allowed;
+        }
+      }
+
+      a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        width: 40px;
+        height: 40px;
+        background: #fff;
+        border-radius: 100%;
+        font-weight: 500;
+        font-size: 18px;
+      }
+    }
   }
   // global settings
 </style>

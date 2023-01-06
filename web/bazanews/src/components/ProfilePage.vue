@@ -1,7 +1,9 @@
 <template>
   <section class="profile-page">
     <div class="container profile-page__container">
-      <form action="#" class="profile-page__form" autocomplete="off" @submit.prevent="test">
+      <h2 class="profile-page__heading">Профиль</h2>
+      <form action="#" class="profile-page__form" autocomplete="off">
+        <input type="text" class="profile-page__input" placeholder="Email" name="email" :value="userEmail" disabled>
         <input v-model="userName" type="text" placeholder="Имя" name="name" class="profile-page__input">
         <input v-model="userSurname" type="text" placeholder="Фамилия" name="surname" class="profile-page__input">
         <button type="submit" class="profile-page__button">
@@ -14,12 +16,18 @@
 
 <style scoped lang="scss">
   .profile-page {
-    padding-top: 30px;
+    padding-top: 35px;
   }
 
   .profile-page__container {
     max-width: 340px;
     padding: 0 20px;
+  }
+
+  .profile-page__heading {
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-align: center;
   }
 
   .profile-page__form {
@@ -53,31 +61,45 @@
     font-size: 18px;
     line-height: 25px;
 
-    color: rgba(black, .5);
+    color: black;
     margin-top: 10px;
   }
 
 </style>
 
 <script>
+  import axios from 'axios';
+  import { mapActions } from 'vuex';
+
   export default {
     data: function() {
       return {
-        userName: this.getName(),
-        userSurname: this.getSurname(),
+        userEmail: '',
+        userName: '',
+        userSurname: '',
       }
     },
     methods: {
-      test: function() {
-        console.log(this.userName);
-        console.log(this.userSurname);
+      getUser: function() {
+        axios.get('http://localhost:8082/api/auth/validate', {
+          params: {
+            token: localStorage.getItem('bzaccesstoken'),
+          }
+        })
+        .then(response => {
+          this.userEmail = response.data.email;
+          this.userName = response.data.name;
+          this.userSurname = response.data.surname;
+        })
+        .catch(error => {
+          this.logout();
+          this.$router.push({ name: 'login' });
+        })
       },
-      getName: function() {
-        return 'Андрей' || '';
-      },
-      getSurname: function() {
-        return 'Ривалл' || '';
-      },
+      ...mapActions({ logout: 'logout' })
     },
+    created: function() {
+      this.getUser();
+    }
   }
 </script>

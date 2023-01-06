@@ -4,9 +4,9 @@
       <SectionSearch :value.sync="searchValue" placeholder="найти событие"/>
 
       <ul class="actions__list">
-        <li class="actions__item" :class="{ is_active: item.active }" v-for="item in actionsItems" :key="actionsItems.indexOf(item)">
+        <li class="actions__item" :class="{ is_active: item.active }" v-for="item in actions" :key="actions.indexOf(item)">
           <div class="actions__mini-item">
-            <img :src="pathItems(item.image)" alt="image" class="actions__image-item">
+            <img :src="item.image" alt="image" class="actions__image-item">
             <div class="actions__info-item">
               <h2 class="actions__title-item">
                 {{ item.title }}
@@ -43,7 +43,6 @@
                   marker-type="placemark"
                   :coords="item.map.coords"
                   :hint-content="item.place"
-                  :icon="{color: item.map.icon.color, glyph: item.map.icon.type}"
                   cluster-name="1"
                 />
 
@@ -55,8 +54,8 @@
                     {{ item.timeTitle }}
                   </h3>
                   <ul class="actions__list-time">
-                    <li class="actions__item-time" v-for="timeItem in item.timeItems">
-                      {{ timeItem }}
+                    <li class="actions__item-time">
+                      {{ item.timeItems }}
                     </li>
                   </ul>
                 </div>
@@ -261,9 +260,9 @@
 </style>
 
 <script>
+  import axios from 'axios';
   import SectionSearch from '@/components/SectionSearch';
   import { yandexMap, ymapMarker } from 'vue-yandex-maps';
-  import pathItems from '@/helpers/pathItems';
 
   export default {
     components: { SectionSearch, yandexMap, ymapMarker },
@@ -325,10 +324,56 @@
             active: false,
           },
         ],
+        actionsData: null,
+        actions: []
       }
     },
     methods: {
-      pathItems,
+      loadActions: function(context) {
+      return axios
+        .get('http://localhost:8082/api/events/?page=0', { // WARNING!! WANTS EDIT URL AND UNCOMMENT VALUE!!!!!!!!!!
+          // params: {
+          //   value: context.state.searchValue,
+          // }
+        })
+        .then(response => {
+          this.actionsData = response.data;
+          this.getActions();
+        });
+      },
+      getActions: function() {
+        let data = [];
+        this.actionsData.content.forEach(el => {
+          let obj = {}
+
+          obj.image = el.imageUrl
+          obj.title = el.title
+          obj.desc = el.description
+          obj.date = el.date
+          obj.place = el.place
+          obj.programmTitle = el.programTitle
+          obj.programmDesc = el.programDesc
+          obj.map = {
+            coords: [el.coordsX, el.coordsY]
+          }
+          obj.timeTitle = "Начало проведения"
+          obj.timeItems = el.startTime
+          obj.priceTitle = "Цены"
+          obj.priceDesc = el.price
+          obj.active = false
+
+          data.push(obj);
+        });
+        this.actions = data;
+      },
     },
+    created: function() {
+      this.loadActions();
+    },
+    watch: {
+      searchValue: function() {
+        this.loadActions();
+      }
+    }
   }
 </script>

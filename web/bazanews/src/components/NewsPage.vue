@@ -4,20 +4,17 @@
       <SectionSearch :value.sync="searchValue" placeholder="попробуйте что-то найти"/>
 
       <ul class="news__list">
-        <li class="news__item" :class="newsClassObj(item)" v-for="item in newsData" :key="newsData.indexOf(item)">
+        <li class="news__item" :class="newsClassObj(item)" v-for="item in news" :key="news.indexOf(item)">
           <template v-if="item.type != 'swiper'">
             <div v-if="item.type == 'user'" class="news__user-item">
-              <!-- <img src="../assets/person-circle-outline.svg" alt="Пользователь" class="news__icon-item"> -->
               <div class="news__data-item">
                 <h3 class="news__name-item">
                   {{ item.name }}
                 </h3>
-                <span class="news__subscribes-item">
-                  {{ subscribeFormat(item.subscribes) }} подписчиков
-                </span>
               </div>
+              <ModerationsBtns v-if="$store.state.moderationMode" :post-id="item.postId"/>
             </div>
-            <img :src=pathItems(item.image) alt="image" class="news__image-item">
+            <img :src=item.image alt="image" class="news__image-item">
             <h2 class="news__title-item">
               {{ item.title }}
             </h2>
@@ -30,7 +27,7 @@
               <div class="news__wrapper-swiper swiper-wrapper">
                 <div class="news__slide-swiper swiper-slide" v-for="image in item.images">
                   <router-link :to="{ name: image.route }">
-                    <img :src=pathItems(image.path) alt="slide" class="news__image-swiper">
+                    <img :src=image.path alt="slide" class="news__image-swiper">
                   </router-link>
                 </div>
               </div>
@@ -43,9 +40,16 @@
             </div>
           </template>
         </li>
-
-
       </ul>
+      <div class="pagination">
+        <Paginate
+          :page-count="totalPages"
+          :click-handler="updatePage"
+          :prev-text="'❮'"
+          :next-text="'❯'"
+          :container-class="'paginate'">
+        </Paginate>
+      </div>
     </div>
   </section>
 </template>
@@ -71,6 +75,7 @@
   }
 
   .news__item {
+    position: relative;
     padding: 15px;
     background: #fff;
     border-radius: 15px;
@@ -103,8 +108,6 @@
     display: flex;
     align-items: flex-start;
     gap: 5px;
-
-    margin-bottom: 10px;
   }
 
   .news__icon-item {
@@ -114,7 +117,12 @@
 
   .news__data-item {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    min-height: 24px;
+    padding-bottom: 10px;
   }
 
   .news__name-item {
@@ -193,52 +201,26 @@
 
 <script>
   import SectionSearch from '@/components/SectionSearch';
-  import pathItems from '@/helpers/pathItems';
+  import ModerationsBtns from '@/components/ModerationsBtns';
+  import Paginate from 'vuejs-paginate';
   import Swiper from 'swiper/bundle';
+  import axios from 'axios';
   import 'swiper/css/bundle';
 
   export default {
-    components: { SectionSearch },
+    components: { SectionSearch, ModerationsBtns, Paginate },
     data: function() {
       return {
         searchValue: '',
 
-        newsData: [
-          {
-            type: 'swiper',
-            images: [
-              {
-                path: 'slide1.png',
-                route: 'news',
-              },
-              {
-                path: 'slide2.png',
-                route: 'news',
-              }
-            ]
-          },
-          {
-            type: 'admin',
-            image: 'gaz.jpg',
-            title: 'Завершение проектирования газопровода "Союз Восток" ожидают в 2023 году',
-            desc: 'Завершение проектирования газопровода "Союз Восток", продолжающего "Силу Сибири 2" через Монголию в Китай, ожидается в 2023 году, сообщила вице-премьер РФ Виктория Абрамченко.',
-            route: 'news',
-          },
-          {
-            type: 'user',
-            avatar: 'person-circle-outline.svg',
-            name: 'riwall',
-            subscribes: '36630',
-            image: 'image.png',
-            title: 'Coolest wallpaper!',
-            desc: 'I made a very beautiful wallpaper for your desktop.',
-            route: 'news'
-          },
-        ],
+        page: 0,
+        totalPages: 1,
+
+        newsData: null,
+        news: [],
       }
     },
     methods: {
-      pathItems,
       subscribeFormat: function(value) {
         return value >= 1000 ? Math.round(value / 100) / 10 + 'K' : value
       },
@@ -249,6 +231,35 @@
           'item--swiper': item.type == 'swiper',
         }
       },
+      loadNews: function(page, text) {
+        return axios
+          .get(`http://localhost:8082/api/post/find?page=${page}&query=${text}`, {
+          })
+          .then(response => {
+            this.newsData = response.data;
+            this.totalPages = response.data.totalPages;
+            this.getNews();
+          });
+      },
+      getNews: function() {
+        let data = [];
+        this.newsData.content.forEach(el => {
+          let obj = {}
+          obj.postId = el.id;
+          obj.type = 'user';
+          obj.name = el.author.name + ' ' + el.author.surname;
+          obj.image = el.imageUrl;
+          obj.title = el.title;
+          obj.desc = el.description;
+          obj.route = "news";
+          data.push(obj);
+        });
+        this.news = data;
+      },
+      updatePage: function(value) {
+        this.page = value-1;
+        this.loadNews(this.page, this.searchValue);
+      }
     },
     mounted: function() {
       new Swiper(this.$refs.swiper, {
@@ -263,5 +274,13 @@
         },
       })
     },
+    created: function() {
+      this.loadNews(this.page, this.searchValue);
+    },
+    watch: {
+      searchValue: function() {
+        this.loadNews(this.page, this.searchValue);
+      },
+    }
   }
 </script>

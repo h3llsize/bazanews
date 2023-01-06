@@ -28,6 +28,7 @@
     position: fixed;
     right: 80px;
     top: 135px;
+    z-index: 10000;
 
     width: 500px;
     height: 700px;
@@ -105,6 +106,17 @@
     border-top-right-radius: 15px;
 
     overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      height: 50px;
+      background: linear-gradient(to top, rgba(#fff,0) 0%, rgba(#fff,1) 100%);
+
+    }
   }
 
   .chat__list-msg {
