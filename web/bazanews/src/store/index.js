@@ -12,6 +12,8 @@ export default new Vuex.Store({
     validate: '',
     signup: '',
 
+    updateNews: false,
+
     moderationMode: false
   },
   mutations: {
@@ -33,6 +35,10 @@ export default new Vuex.Store({
 
     updateModerationMode: function(state, value) {
       state.moderationMode = value;
+    },
+
+    updateNews: function(state, value) {
+      state.updateNews = value;
     }
   },
   getters: {
@@ -49,11 +55,13 @@ export default new Vuex.Store({
         context.commit('updateAuth', true);
         context.commit('updateRole', response.data.roles);
         context.commit('updateToken', localStorage.getItem('bzaccesstoken'));
+        context.commit('updateModerationMode', false);
       })
       .catch(error => {
         context.commit('updateAuth', false);
         context.commit('updateRole', 0);
         context.commit('updateToken', false);
+        context.commit('updateModerationMode', false);
         localStorage.setItem('bzaccesstoken', false);
       })
     },
@@ -66,6 +74,7 @@ export default new Vuex.Store({
         context.commit('updateAuth', true);
         context.commit('updateToken', response.data.accessToken);
         context.commit('updateValidate', false);
+        context.commit('updateModerationMode', false);
         localStorage.setItem('bzaccesstoken', response.data.accessToken);
         context.dispatch('validateToken');
       })
@@ -74,6 +83,7 @@ export default new Vuex.Store({
         context.commit('updateRole', 0);
         context.commit('updateToken', false);
         context.commit('updateValidate', true);
+        context.commit('updateModerationMode', false);
         localStorage.setItem('bzaccesstoken', false);
       })
     },
@@ -89,6 +99,7 @@ export default new Vuex.Store({
         context.commit('updateRole', 0);
         context.commit('updateValidate', false);
         context.commit('updateSignup', true);
+        context.commit('updateModerationMode', false);
       })
       .catch(error => {
         context.commit('updateAuth', false);
@@ -96,6 +107,7 @@ export default new Vuex.Store({
         context.commit('updateToken', false);
         context.commit('updateValidate', true);
         context.commit('updateSignup', false);
+        context.commit('updateModerationMode', false);
         localStorage.setItem('bzaccesstoken', false);
       })
     },
@@ -103,6 +115,7 @@ export default new Vuex.Store({
       context.commit('updateAuth', false);
       context.commit('updateRole', 0);
       context.commit('updateToken', false);
+      context.commit('updateModerationMode', false);
       localStorage.setItem('bzaccesstoken', false);
     }
   },

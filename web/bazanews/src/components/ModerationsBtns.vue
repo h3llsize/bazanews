@@ -6,8 +6,8 @@
       <span></span>
     </div>
     <div v-if="menuOpen" class="moderation__menu">
-      <button class="moderation__btn" @click.prevent="applyPost(postId)">Одобрить</button>
-      <button class="moderation__btn">Отклонить</button>
+      <button class="moderation__btn" @click.prevent="checkPost(postId)">Одобрить</button>
+      <button class="moderation__btn" @click.prevent="declinePost(postId)">Отклонить</button>
     </div>
   </div>
 </template>
@@ -70,6 +70,7 @@
 </style>
 
 <script>
+
   import axios from 'axios';
 
   export default {
@@ -80,23 +81,39 @@
       }
     },
     methods: {
-      applyPost: function(id) {
-        return axios.get('http://localhost:8082/api/post/check', {
+      checkPost: function(id) {
+        return axios.get(`http://localhost:8082/api/post/check`, {
           params: {
             id: id,
             accessToken: localStorage.getItem('bzaccesstoken'),
           }
-        },)
+        })
         .then(response => {
           alert(response.data);
+          this.updateState();
         })
         .catch(error => {
           alert(error);
         })
+      },
+      declinePost: function(id) {
+        return axios.get(`http://localhost:8082/api/post/decline`, {
+          params: {
+            id: id,
+            accessToken: localStorage.getItem('bzaccesstoken'),
+          }
+        })
+        .then(response => {
+          alert(response.data);
+          this.updateState();
+        })
+        .catch(error => {
+          alert(error);
+        })
+      },
+      updateState: function() {
+        this.$store.commit('updateNews', true);
       }
-    },
-    computed: {
-
     },
   }
 </script>
