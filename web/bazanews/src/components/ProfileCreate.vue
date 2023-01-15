@@ -157,13 +157,11 @@ export default {
     uploadPost: function () {
       let formData = new FormData();
       formData.append('file', this.file,);
-      formData.append('pageDTO', JSON.stringify({
-        title: this.heading,
-        description: this.desc,
-        slug: 'name',
-        imageName: 'name',
-        accessToken: localStorage.getItem('bzaccesstoken'),
-      }));
+      formData.append('title', this.heading);
+      formData.append('description', this.desc);
+      formData.append('slug', 'name');
+      formData.append('imageName', 'name');
+      formData.append('accessToken', localStorage.getItem('bzaccesstoken'));
       axios.post('http://localhost:8082/api/post/add', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -171,7 +169,6 @@ export default {
       })
       .then(response => {
         this.validate = response.data;
-        this.$refs.file.files = [];
       })
       .catch(error => {
         console.log(error);
