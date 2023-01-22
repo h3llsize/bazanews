@@ -5,7 +5,7 @@
         Ваши посты
       </h2>
       <ul class="profile-posts__list">
-        <NewsItem :post="post" :news="false" v-for="post in posts" :key="posts.indexOf(post)"/>
+        <NewsItem :item="post" :news="false" v-for="post in posts" :key="posts.indexOf(post)"/>
       </ul>
       <div class="pagination">
         <Paginate
@@ -43,7 +43,7 @@
   import Paginate from 'vuejs-paginate';
 
   export default {
-    props: [ 'userPosts' ],
+    props: [ 'userPosts', 'author' ],
     components: { NewsItem, Paginate },
     data: function() {
       return {
@@ -55,11 +55,11 @@
     methods: {
       getPosts: function() {
         let data = [];
-        this.userPosts.content.forEach(el => {
+        this.userPosts.forEach(el => {
+          console.log('test');
           let obj = {}
-          obj.postId = el.id;
           obj.type = 'user';
-          obj.name = el.author.name + ' ' + el.author.surname;
+          obj.name = this.author;
           obj.typeMedia = this.typeMedia(el.imageUrl);
           obj.image = el.imageUrl;
           obj.title = el.title;
@@ -85,5 +85,13 @@
         }
       },
     },
+    created: function() {
+      this.getPosts();
+    },
+    watch: {
+      'userPosts': function() {
+        this.getPosts();
+      }
+    }
   }
 </script>

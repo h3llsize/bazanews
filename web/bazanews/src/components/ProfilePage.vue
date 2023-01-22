@@ -4,7 +4,7 @@
 
       <ProfileUser :user-email="userEmail" :user-name="userName" :user-surname="userSurname"/>
       <ProfileCreate/>
-      <ProfilePosts :user-posts="userPosts"/>
+      <ProfilePosts :user-posts="userPosts" :author="userName+' '+userSurname"/>
 
     </div>
   </section>

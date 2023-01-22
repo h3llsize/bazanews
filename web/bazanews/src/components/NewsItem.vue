@@ -1,7 +1,7 @@
 <template>
-  <li class="news__item" :class="newsClassObj(item)">
-    <template v-if="item.type != 'swiper'">
-      <div v-if="item.type == 'user'" class="news__user-item">
+  <li class="news__item item--user">
+    <template>
+      <div class="news__user-item">
         <div class="news__data-item">
           <h3 class="news__name-item">
             {{ item.name }}
@@ -114,9 +114,10 @@
     methods: {
       newsClassObj: function (item) {
         return {
-          'item--admin': item.type == 'admin',
-          'item--user': item.type == 'user',
-          'item--swiper': item.type == 'swiper',
+          // 'item--admin': item.type == 'admin',
+          // 'item--user': item.type == 'user',
+          // 'item--swiper': item.type == 'swiper',
+          'item--user': true
         }
       },
     },
