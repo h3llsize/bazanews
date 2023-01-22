@@ -48,6 +48,8 @@
     data: function() {
       return {
         posts: [],
+        totalPages: 1,
+        page: 0,
       }
     },
     methods: {

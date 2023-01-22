@@ -128,7 +128,7 @@
     height: 230px;
 
     &.is_active {
-      height: auto;
+      height: auto !important;
     }
   }
 
@@ -164,6 +164,22 @@
     line-height: 22px;
 
     color: rgba(black, .5);
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+            line-clamp: 4;
+    -webkit-box-orient: vertical;
+  }
+
+  .actions__item.is_active .actions__desc-item {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 50000; /* number of lines to show */
+            line-clamp: 50000;
+    -webkit-box-orient: vertical;
   }
 
   .actions__data-item {

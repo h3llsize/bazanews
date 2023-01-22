@@ -4,8 +4,7 @@
       <SectionSearch :value.sync="searchValue" placeholder="найти предприятие" />
 
       <ul class="enterprises__list">
-        <li class="enterprises__item" :class="{ is_active: item.active }" v-for="item in enterprises"
-          :key="enterprises.indexOf(item)">
+        <li class="enterprises__item" :class="{ is_active: item.active, }" v-for="item in enterprises" :key="enterprises.indexOf(item)">
           <div class="enterprises__mini-item">
             <img :src="item.image" alt="image" class="enterprises__image-item">
             <div class="enterprises__info-item">
@@ -110,7 +109,7 @@
   height: 230px;
 
   &.is_active {
-    height: auto;
+    height: auto !important;
   }
 }
 
@@ -147,6 +146,22 @@
   line-height: 22px;
 
   color: rgba(black, .5);
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 4; /* number of lines to show */
+          line-clamp: 4;
+  -webkit-box-orient: vertical;
+}
+
+.enterprises__item.is_active .enterprises__desc-item {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 50000; /* number of lines to show */
+          line-clamp: 50000;
+  -webkit-box-orient: vertical;
 }
 
 .enterprises__data-item {
@@ -316,9 +331,13 @@ export default {
       this.page = value - 1;
       this.loadEnterprises(this.page, this.searchValue);
     },
+    ellipsisFunc() {
+
+    }
   },
   created: function () {
     this.loadEnterprises(this.page, this.searchValue);
+    this.ellipsisFunc();
   },
   watch: {
     searchValue: function () {

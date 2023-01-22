@@ -88,7 +88,7 @@
     justify-content: center;
 
     width: 100%;
-    padding-top: 20px;
+    padding: 20px 0;
   }
 
   .paginate {
@@ -120,6 +120,110 @@
         font-weight: 500;
         font-size: 18px;
       }
+    }
+  }
+
+
+  @media (max-width: 420px) {
+    .container {
+      max-width: 420px !important;
+      padding: 0 70px !important;
+    }
+
+    .search {
+      left: 70px;
+      right: 70px;
+      width: auto !important;
+
+      &::before {
+        left: 0 !important;
+        right: 0 !important;
+        max-width: 320px;
+      }
+    }
+
+    .search__input {
+      padding-left: 45px !important;
+    }
+
+    .search__icon {
+      width: 20px !important;
+      height: 20px !important;
+    }
+
+    .header {
+      z-index: 1000;
+    }
+
+    .header__logo {
+      font-size: 20px !important;
+      margin-bottom: 10px !important;
+    }
+
+    .header__link {
+      width: auto !important;
+    }
+
+    .header__link span {
+      display: none;
+    }
+
+    .header__container {
+      padding-left: 10px !important;
+    }
+
+    .profile__container {
+      padding: 36px 5px !important;
+    }
+
+    .search__input {
+      font-size: 14px !important;
+    }
+
+    .news__list,
+    .actions__list,
+    .enterprises__list {
+      padding-top: 0 !important;
+    }
+
+    .actions__item,
+    .enterprises__item {
+      height: 450px !important;
+    }
+
+    .actions__mini-item,
+    .enterprises__mini-item {
+      flex-direction: column;
+    }
+
+    .actions__image-item,
+    .enterprises__image-item {
+      width: 100% !important;
+      height: 250px !important;
+      margin-top: 30px !important;
+    }
+
+    .actions__map-info-item,
+    .enterprises__map-info-item {
+      grid-template-columns: 1fr !important;
+    }
+
+    .ymap-container {
+      width: 100% !important;
+      height: 250px !important;
+    }
+
+    .profile-create__form {
+      width: 100% !important;
+    }
+
+    .login__input,
+    .signup__input {
+      width: 100% !important;
+    }
+
+    .profile-posts__container {
+      padding: 0 !important;
     }
   }
   // global settings
