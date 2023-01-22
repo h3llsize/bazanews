@@ -7,9 +7,12 @@
             {{ item.name }}
           </h3>
         </div>
-        <ModerationsBtns v-if="$store.state.moderationMode" :post-id="item.postId" />
+        <ModerationsBtns v-if="$store.state.moderationMode && news" :post-id="item.postId" />
       </div>
-      <img :src=item.image alt="image" class="news__image-item">
+      <img v-if="item.typeMedia === 'img'" :src="item.image" alt="image" class="news__image-item">
+      <video v-else class="news__video-item" controls="controls">
+        <source :src="item.image" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+      </video>
       <h2 class="news__title-item">
         {{ item.title }}
       </h2>
@@ -89,13 +92,19 @@
     margin: 0 -15px 10px -15px;
     width: calc(100% + 15px * 2);
   }
+
+  .news__video-item {
+    border-radius: 0;
+    margin: 0 -15px 10px -15px;
+    width: calc(100% + 15px * 2);
+  }
 </style>
 
 <script>
   import ModerationsBtns from '@/components/ModerationsBtns';
 
   export default {
-    props: [ 'item' ],
+    props: [ 'item', 'news' ],
     components: { ModerationsBtns },
     data: function () {
       return {

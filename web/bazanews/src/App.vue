@@ -2,7 +2,7 @@
   <div class="website" :class="{ chat_active: chatActive }">
     <HeaderSection :active.sync="chatActive"/>
     <Router-View/>
-    <ChatSection :active="chatActive"/>
+    <!-- <ChatSection :active="chatActive"/>  DISABLED -->
     <ProfileSection/>
   </div>
 </template>

@@ -70,8 +70,8 @@
 </style>
 
 <script>
-
   import axios from 'axios';
+  import { API_BASE_URL } from '@/helpers/API_BASE_URL';
 
   export default {
     props: [ 'postId' ],
@@ -82,7 +82,7 @@
     },
     methods: {
       checkPost: function(id) {
-        return axios.get(`http://localhost:8082/api/post/check`, {
+        return axios.get(`${API_BASE_URL}/api/post/check`, {
           params: {
             id: id,
             accessToken: localStorage.getItem('bzaccesstoken'),
@@ -97,7 +97,7 @@
         })
       },
       declinePost: function(id) {
-        return axios.get(`http://localhost:8082/api/post/decline`, {
+        return axios.get(`${API_BASE_URL}/api/post/decline`, {
           params: {
             id: id,
             accessToken: localStorage.getItem('bzaccesstoken'),

@@ -3,9 +3,9 @@
     <h2 class="profile-page__heading-user">Профиль</h2>
     <form action="#" class="profile-page__form-user" autocomplete="off">
       <input type="text" class="profile-page__input-user" placeholder="Email" name="email" :value="userEmail" disabled>
-      <input v-model="userName" type="text" placeholder="Имя" name="name" class="profile-page__input-user">
-      <input v-model="userSurname" type="text" placeholder="Фамилия" name="surname" class="profile-page__input-user">
-      <button type="submit" class="profile-page__button-user">
+      <input v-model="userName" type="text" placeholder="Имя" name="name" class="profile-page__input-user" disabled>
+      <input v-model="userSurname" type="text" placeholder="Фамилия" name="surname" class="profile-page__input-user" disabled>
+      <button type="submit" class="profile-page__button-user" disabled>
         Сохранить
       </button>
     </form>

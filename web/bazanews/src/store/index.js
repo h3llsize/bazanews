@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import { API_BASE_URL } from '@/helpers/API_BASE_URL';
 
 Vue.use(Vuex);
 
@@ -13,6 +14,8 @@ export default new Vuex.Store({
     signup: '',
 
     updateNews: false,
+    updateActions: false,
+    updateEnterprises: false,
 
     moderationMode: false
   },
@@ -39,14 +42,17 @@ export default new Vuex.Store({
 
     updateNews: function(state, value) {
       state.updateNews = value;
-    }
-  },
-  getters: {
-
+    },
+    updateActions: function(state, value) {
+      state.updateActions = value;
+    },
+    updateEnterprises: function(state, value) {
+      state.updateEnterprises = value;
+    },
   },
   actions: {
     validateToken(context) {
-      axios.get('http://localhost:8082/api/auth/validate', {
+      axios.get(`${API_BASE_URL}/api/auth/validate`, {
         params: {
           token: localStorage.getItem('bzaccesstoken'),
         }
@@ -66,7 +72,7 @@ export default new Vuex.Store({
       })
     },
     login: function(context, user) {
-      axios.post('http://localhost:8082/api/auth/login', {
+      axios.post(`${API_BASE_URL}/api/auth/login`, {
         email: user.email,
         password: user.password,
       })
@@ -88,7 +94,7 @@ export default new Vuex.Store({
       })
     },
     signup: function(context, user) {
-      axios.post('http://localhost:8082/api/auth/signup', {
+      axios.post(`${API_BASE_URL}/api/auth/signup`, {
         name: user.name,
         surname: user.surname,
         email: user.email,

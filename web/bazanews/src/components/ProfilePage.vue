@@ -30,6 +30,7 @@
   import ProfilePosts from '@/components/ProfilePosts';
   import axios from 'axios';
   import { mapActions } from 'vuex';
+  import { API_BASE_URL } from '@/helpers/API_BASE_URL';
 
   export default {
     components: { ProfileUser, ProfileCreate, ProfilePosts },
@@ -43,7 +44,7 @@
     },
     methods: {
       getUser: function() {
-        axios.get('http://localhost:8082/api/auth/validate', {
+        axios.get(`${API_BASE_URL}/api/auth/validate`, {
           params: {
             token: localStorage.getItem('bzaccesstoken'),
           }

@@ -15,14 +15,14 @@
               {{ item.title }}
             </router-link>
           </li>
-          <li class="header__item" :class="{ is_active: chatActive }">
+          <!-- <li class="header__item" :class="{ is_active: chatActive }">
             <button class="header__link" @click.prevent="activateChat">
               <svg class="header__icon">
                 <use xlink:href="../assets/sprite.svg#chatbubble-outline"></use>
               </svg>
               Чат
             </button>
-          </li>
+          </li> -->
           <li v-if="$store.state.role > 0 && $store.state.authorized" class="header__item" :class="{ is_active: 'admin' == $route.name }">
             <router-link :to="{ name: 'admin' }" class="header__link">
               <div style="border: 1px solid black; border-radius: 40%;" class="header__icon"></div>

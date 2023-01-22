@@ -199,7 +199,27 @@
           });
           this.messageValue = '';
         }
-      }
+      },
+      websocket: function() {
+        console.log('start method');
+        const ws = new WebSocket("ws://localhost:8082");
+        ws.onmessage = message => {
+          const messages = JSON.parse(message.data);
+        }
+        ws.onopen = event => {
+          console.log('connection');
+        }
+        function send(event) {
+          event.preventDefault();
+          ws.send(JSON.stringify({
+
+          }))
+          return false;
+        }
+      },
     },
+    created: function() {
+      // this.websocket();
+    }
   }
 </script>

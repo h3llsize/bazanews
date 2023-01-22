@@ -138,6 +138,7 @@
 
 <script>
 import axios from 'axios';
+import { API_BASE_URL } from '@/helpers/API_BASE_URL';
 
 export default {
   data: function () {
@@ -162,7 +163,7 @@ export default {
       formData.append('slug', 'name');
       formData.append('imageName', 'name');
       formData.append('accessToken', localStorage.getItem('bzaccesstoken'));
-      axios.post('http://localhost:8082/api/post/add', formData, {
+      axios.post(`${API_BASE_URL}/api/post/add`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },

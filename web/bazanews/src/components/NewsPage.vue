@@ -4,7 +4,7 @@
       <SectionSearch :value.sync="searchValue" placeholder="попробуйте что-то найти"/>
 
       <ul class="news__list">
-        <NewsItem :item="item" v-for="item in news" :key="news.indexOf(item)"/>
+        <NewsItem :item="item" :news="true" v-for="item in news" :key="news.indexOf(item)"/>
       </ul>
       <div class="pagination">
         <Paginate
@@ -47,6 +47,7 @@
   import Swiper from 'swiper/bundle';
   import axios from 'axios';
   import 'swiper/css/bundle';
+  import { API_BASE_URL } from '@/helpers/API_BASE_URL';
 
   export default {
     components: { SectionSearch, NewsItem, Paginate },
@@ -62,12 +63,9 @@
       }
     },
     methods: {
-      subscribeFormat: function(value) {
-        return value >= 1000 ? Math.round(value / 100) / 10 + 'K' : value
-      },
       loadNews: function(page, text, moderate) {
         return axios
-          .get(`http://localhost:8082/api/post/${moderate ? 'moderate' : 'find'}`, {
+          .get(`${API_BASE_URL}/api/post/${moderate ? 'moderate' : 'find'}`, {
             params: {
               page: page,
               query: text,
@@ -87,6 +85,7 @@
           obj.postId = el.id;
           obj.type = 'user';
           obj.name = el.author.name + ' ' + el.author.surname;
+          obj.typeMedia = this.typeMedia(el.imageUrl);
           obj.image = el.imageUrl;
           obj.title = el.title;
           obj.desc = el.description;
@@ -99,8 +98,16 @@
         this.page = value-1;
         this.loadNews(this.page, this.searchValue, this.$store.state.moderationMode);
       },
-      updateState: function() {
-        this.update = true;
+      typeMedia: function(url) {
+        const types = new Map([["jpg", "img"], ["png", "img"], ["webp", "img"], ["jpeg", "img"], ["mp4", "video"]]);
+        try {
+          const urlObj = new URL(url);
+          const extension = urlObj.pathname.split(".")[1];
+
+          return types.get(extension);
+        } catch (error) {
+          return 'img';
+        }
       }
     },
     mounted: function() {
@@ -130,3 +137,5 @@
     }
   }
 </script>
+
+
