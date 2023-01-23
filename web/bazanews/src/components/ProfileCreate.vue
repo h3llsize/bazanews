@@ -13,7 +13,7 @@
           <span ref="fileInput">
             Фотография
           </span>
-          <input ref="file" type="file" @change="onChangeFile" id="profileCreateFile" accept=".png, .jpg, .webp, .jpeg"
+          <input ref="file" type="file" @change="onChangeFile" id="profileCreateFile" accept=".png, .jpg, .webp, .jpeg, .mp4, .webm"
             class="profile-create__file">
         </label>
         <button class="profile-create__btn" type="submit">Создать пост</button>

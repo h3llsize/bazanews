@@ -7,7 +7,7 @@
       <ul class="profile-posts__list">
         <NewsItem :item="post" :news="false" v-for="post in posts" :key="posts.indexOf(post)"/>
       </ul>
-      <div class="pagination">
+      <!-- <div class="pagination">
         <Paginate
           :page-count="totalPages"
           :click-handler="updatePage"
@@ -15,7 +15,7 @@
           :next-text="'❯'"
           :container-class="'paginate'">
         </Paginate>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -36,15 +36,22 @@
     margin-bottom: 20px;
   }
 
+  .profile-posts__list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding-bottom: 30px;
+  }
+
 </style>
 
 <script>
   import NewsItem from '@/components/NewsItem.vue';
-  import Paginate from 'vuejs-paginate';
+  // import Paginate from 'vuejs-paginate';
 
   export default {
     props: [ 'userPosts', 'author' ],
-    components: { NewsItem, Paginate },
+    components: { NewsItem },
     data: function() {
       return {
         posts: [],
@@ -56,7 +63,6 @@
       getPosts: function() {
         let data = [];
         this.userPosts.forEach(el => {
-          console.log('test');
           let obj = {}
           obj.type = 'user';
           obj.name = this.author;
@@ -69,10 +75,10 @@
         });
         this.posts = data;
       },
-      updatePage: function(value) {
-        this.page = value-1;
-        this.loadNews(this.page, this.searchValue, this.$store.state.moderationMode);
-      },
+      // updatePage: function(value) {
+      //   this.page = value-1;
+      //   this.loadNews(this.page, this.searchValue, this.$store.state.moderationMode);
+      // },
       typeMedia: function(url) {
         const types = new Map([["jpg", "img"], ["png", "img"], ["webp", "img"], ["jpeg", "img"], ["mp4", "video"]]);
         try {
