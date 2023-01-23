@@ -89,6 +89,7 @@
           obj.image = el.imageUrl;
           obj.title = el.title;
           obj.desc = el.description;
+          obj.date = el.publishDate;
           obj.route = "news";
           data.push(obj);
         });

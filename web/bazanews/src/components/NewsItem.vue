@@ -6,11 +6,14 @@
           <h3 class="news__name-item">
             {{ item.name }}
           </h3>
+          <span class="news__date-item">
+            {{ item.date }}
+          </span>
         </div>
         <ModerationsBtns v-if="$store.state.moderationMode && news" :post-id="item.postId" />
       </div>
       <img v-if="item.typeMedia === 'img'" :src="item.image" alt="image" class="news__image-item">
-      <video v-else class="news__video-item" controls="controls">
+      <video v-else class="news__video-item" :src="item.image" controls="controls">
         <source :src="item.image" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
       </video>
       <h2 class="news__title-item">
@@ -31,6 +34,10 @@
     border-radius: 15px;
   }
 
+  .news__date-item {
+    font-size: 12px;
+  }
+
   .news__image-item {
     width: 100%;
     margin-bottom: 20px;
@@ -43,6 +50,7 @@
     line-height: 19px;
 
     color: #000000;
+    word-wrap: break-word;
     margin-bottom: none;
   }
 
@@ -51,7 +59,7 @@
     line-height: 19px;
 
     color: rgba(black, .5);
-    margin-bottom: none;
+    word-wrap: break-word;
   }
 
   .news__user-item {

@@ -6,12 +6,12 @@
       </h2>
       <form action="#" class="profile-create__form" @submit.prevent="uploadPost()">
         <input v-model="heading" type="text" name="title" placeholder="Заголовок" class="profile-create__input">
-        <textarea v-model="desc" class="profile-create__input profile-create__input-ta" name="desc"
+        <textarea v-model="desc" class="profile-create__input profile-create__input-ta" maxlength="400" name="desc"
           placeholder="Описание"></textarea>
         <label for="profileCreateFile" class="profile-create__filelabel">
-          <h3 class="profile-create__heading-form">Выберите фотографию</h3>
+          <h3 class="profile-create__heading-form">Выберите файл</h3>
           <span ref="fileInput">
-            Фотография
+            Файл
           </span>
           <input ref="file" type="file" @change="onChangeFile" id="profileCreateFile" accept=".png, .jpg, .webp, .jpeg, .mp4, .webm"
             class="profile-create__file">
