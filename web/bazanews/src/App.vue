@@ -124,15 +124,82 @@
   }
 
 
+  @media (max-width: 968px) {
+    .news,
+    .actions,
+    .enterprises {
+      padding: 0 70px;
+    }
+
+    .profile-posts {
+      padding: 0 70px !important;
+    }
+
+    .search {
+      max-width: 600px;
+      width: 100% !important;
+
+      &::before {
+        left: -1px !important;
+        right: -1px !important;
+      }
+    }
+
+    .header {
+      z-index: 1000;
+      padding-top: 28px !important;
+    }
+
+    .header__list {
+      width: auto;
+    }
+
+    .header__link {
+      width: auto !important;
+    }
+
+    .header__link span {
+      display: none;
+    }
+
+    .ymap-container {
+      width: 100% !important;
+      height: 250px !important;
+    }
+
+    .moderation__menu {
+      top: 50px !important;
+      right: 0px !important;
+      border-top-left-radius: 20px !important;
+      border-top-right-radius: 0px !important;
+    }
+  }
+
+  @media (max-width: 780px) {
+    .search {
+      left: 90px !important;
+      right: 90px !important;
+      width: auto !important;
+    }
+  }
+
+
   @media (max-width: 420px) {
     .container {
       max-width: 420px !important;
       padding: 0 70px !important;
     }
 
+    .news,
+    .actions,
+    .enterprises {
+      padding-right: 0 !important;
+      padding-left: 0 !important;
+    }
+
     .search {
-      left: 70px;
-      right: 70px;
+      left: 70px !important;
+      right: 70px !important;
       width: auto !important;
 
       &::before {
@@ -206,11 +273,6 @@
     .actions__map-info-item,
     .enterprises__map-info-item {
       grid-template-columns: 1fr !important;
-    }
-
-    .ymap-container {
-      width: 100% !important;
-      height: 250px !important;
     }
 
     .profile-create__form {
